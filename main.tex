@@ -1,0 +1,832 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{txfonts}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{graphicx}
+
+
+%%% SETUP for amsmath %%%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{proof}[1][Proof]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{notation}[1][Notation]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand{\qed}{\nobreak \ifvmode \relax \else
+    \ifdim\lastskip,1.5em \hskip-\lastskip
+    \hskip1.5em plus0em minus 0.5em \fi \nobreak
+    \vrule height0.75em width0.5em depth 0.25em \fi}
+%%% END SETUP for amsmath %%%
+
+
+%%% Maths shortcuts %%%
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Real}{\operatorname{Re}}
+\newcommand{\Imp}{\operatorname{Im}}
+\newcommand{\OO}{$ \Omega \;$}
+\newcommand{\GG}{$ \gamma \;$}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\Arg}{\operatorname{Arg}}
+\newcommand{\SumI}{\sum_{n = 0}^\infty}
+\newcommand{\SumII}{\sum_{n = -\infty}^\infty}
+\newcommand{\CSeries}{\SumI a_n(z-z_0)^n}
+\newcommand{\LSeries}{\SumII a_n(z-z_0)^n}
+\newcommand{\Res}[2]{\mathop{Res} \left[ #1, \; #2 \right]}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+\section*{Chapter 1} %%%%%%%
+\setcounter{section}{1}
+\subsection*{Set definitions}
+\begin{notation}
+    Let $z_0 \in \C, r > 0$. The \textit{open disk}, $D_r(z_0)$ is
+    $$D_r(z_0) = \{ z \in \C: |z - z_0| < r\}$$
+    The \textit{closed disk}, $\overline{D_r(z_0)}$, is
+    $$\overline{D_r(z_0)} = \{ z \in \C: |z - z_0| \leqq r\} $$
+    The \textit{boundary} of a disk is
+    $$C_r(z_0) = \{z \in \C: |z-z_0| = r\}$$
+\end{notation}
+
+\begin{definition} \label{interior} \textbf{interior}\label{openSet} \textbf{openSet}
+    Let $\Omega \subset \C$, $z_0$ is an \textit{interior point} of $\Omega$ if
+    there is $r > 0$ such that $D_r(z_0) \in \Omega$. The \textit{interior} of
+    $\Omega$ consists of all of the interior points. A set is \textit{open} if
+    every point in the set is an interior point.
+\end{definition}
+
+\begin{definition} \label{closedSet} \textbf{closedSet}
+    A set $\Omega$ is closed if $\Omega^C = \C\backslash\Omega$ is open
+\end{definition}
+
+\begin{definition} \label{limitPoint} \textbf{limitPoint}
+    A point $z \in \C$ is said to be a \textit{limit point} of the set $\Omega$
+    if there is a sequence of points $z_n \in \Omega$ such that $z_n \neq z$ and
+    \(\lim_{n \rightarrow \infty} z_n = z\)
+\end{definition}
+
+A set is closed $\Leftrightarrow$ it contains all its limit points.
+
+\begin{notation}
+    The \textit{closure} of any set $\Omega$ is the union of $\Omega$ and its limit
+    points denoted by $\overline{\Omega}$. The \textit{boundary} of a set
+    $\Omega \subset \C$ is $$\overline{\Omega}\backslash\text{Int}\Omega = \partial\Omega$$
+\end{notation}
+
+\begin{definition} \label{compact} \textbf{compact}
+    A set $\Omega$ is compact if it is closed and bounded.
+\end{definition}
+
+\begin{theorem}
+    A set $\Omega \subset \C$ is compact iff every sequence \(\{z_n\} \subset \Omega\)
+    has a subsequence that converges to a point in $\Omega$
+\end{theorem}
+
+\begin{definition} \label{openCovering} \textbf{openCovering}
+    An \textit{open covering} of \OO is a family of open sets \(\{U_\alpha\}\) such that
+    $\Omega \subset \bigcup_\alpha U_\alpha$.
+\end{definition}
+
+\begin{theorem}
+    A set \OO is compact if and only if every open covering of \OO is a finite
+    subcovering.
+\end{theorem}
+
+\subsection*{Properties of compact sets}
+
+\begin{theorem}
+    Let \(\Omega_1 \supset \Omega_2 \supset \Omega_3 \cdots\) be a sequence of non-empty compact sets in $\C$
+    such that \(\text{diam}\;\Omega_n\rightarrow0\) as $n \rightarrow \infty$.
+    Then (thereexistsunique) $\exists! w \in \C$ such that $w \in \Omega_n$ for all $n$.
+\end{theorem}
+\begin{proof}
+    Existance: Cauchy sequence\\
+    Uniqueness: $w' - w > 0$ for two distinct points, contradicts \(\text{diam}\;\Omega_n\rightarrow0\)
+\end{proof}
+
+\begin{definition} \label{connectedSets} \textbf{connectedSets}
+    An open set $\Omega \subset \C$ is \textit{connected} if it is not possible to find
+    a two disjoint non-empty open sets $\Omega_1,\; \Omega_2$ such that
+    $\Omega = \Omega_1 \bigcup \Omega_2$.\\
+    Similarly, a closed set $F$ is \textit{connected} if one cannot find $F_1, \; F_2$ such that
+    $F = F_1 \bigcup F_2$ where $F_1, \;F_2$ are disjoint non-empty closed sets.
+\end{definition}
+\textit{Alternatively:}
+\begin{definition}
+    An open set is connected iff any two points in \OO can be joined by a curve \GG entirely contained in \OO.
+\end{definition}
+
+
+\section*{Chapter 2} %%%%%%
+\setcounter{section}{2}
+
+\begin{definition} \label{mapping} \textbf{mapping}
+    Let $\Omega_1$ and $\Omega_2 \subset \C$. $f\;:\; \Omega_1 \rightarrow \Omega_2$
+    is said to be a \textit{mapping} from $\Omega_1$ to $\Omega_2$ if for any
+    $z = x +iy \in \Omega_1$, $\exists$! complex number $w = u + iv \in \Omega_2$ such that
+    $f(z) = w$
+\end{definition}
+
+\subsection*{Continuous complex functions}
+\begin{definition} \label{continuity} \textbf{continuity}
+    let $f$ be a continuous function defined on $\Omega \subset \C$. We say that $f$ is
+    \textit{continous} at the point $z_0 \in \Omega$ if $\forall\epsilon > 0,\; \exists\delta > 0$
+    such that whenever $z \in \Omega$ and $|z-z_0| < \delta$, $$|f(z) - f(z_0)| < \epsilon$$
+    The function is said to be continuous on \OO if it is continuous at every point on \OO
+\end{definition}
+
+\begin{definition} \label{complexDerivative} \textbf{complexDerivative}
+    We say that $f$ is differentiable or \textit{holomorphic} at $z_0 \in \Omega_1$ if
+    \[f'(z_0) = \lim_{h\rightarrow 0}\frac{f(z_0+h)-f(z_0)}{h}\text{ exists}\]
+\end{definition}
+\begin{itemize}
+    \item $f$ is holomorphic on an open set if is holomophic at every point of the set.\\
+    \item $f$ is holomorphic on a closed set if it is holomorphic on an open set containing the closed set.
+\end{itemize}
+
+\begin{definition}
+    A function is holomorphic if $\exists$ a such that
+    \[ f(z_0 +h) - f(z_0) - ha = h\phi(h, z_0) \]
+    Where $\phi(h, z_0)$ is well defined for small h such that
+    \[ \lim_{h\rightarrow 0} \phi(h, z_0) = 0 \]
+\end{definition}
+
+\begin{corollary}
+    If a function is holomorohic then it is continuous.
+\end{corollary}
+
+\subsection*{Cauchy-Riemann Equations}
+\begin{definition} \label{partialDerivative} \textbf{partialDerivative}
+    $$\frac{\partial}{\partial z} = \frac{1}{2}\left(\frac{\partial}{\partial x} + \frac{1}{i}\frac{\partial}{\partial y}\right)$$
+    $$\frac{\partial}{\partial \overline{z}} = \frac{1}{2}\left(\frac{\partial}{\partial x} - \frac{1}{i}\frac{\partial}{\partial y}\right)$$
+\end{definition}
+
+\begin{theorem}
+    If $f(z) = u(x,y) + iv(x,y)$ is holomorphic at $z_0$ then we have:
+    $$\frac{\partial f}{\partial \overline{z}}(z_0) = 0 \text{ and } \frac{\partial f}{\partial z}(z_0) = 2\frac{\partial u}{\partial z}(z_0) $$
+\end{theorem}
+
+\begin{lemma}
+    $f(z) = u(x,y) + iv(x,y)$ is holomorphic and $f'(z)=\frac{\partial f}{\partial z}(z) \; \Leftrightarrow \; u'_x = v'_y \text{ and } -u'_y=v'_x$
+\end{lemma}
+
+\begin{theorem}
+    In polar coordinates, the CR eqs become:
+    \[ u'_r=\frac{1}{r}v'_\theta \text{ and } v'_r = - \frac{1}{r}u'_\theta\]
+\end{theorem}
+
+\begin{proof}
+    \[u'_x=u'_r\times \frac{\partial r}{\partial x} + u'_\theta \times \frac{\partial \theta}{\partial x}\]
+    \[u'_r=u'_x \cos{\theta} + u'_y \sin{\theta}\]
+\end{proof}
+
+\subsection*{Harmonic functions}
+\begin{definition} \label{harmonicFunction} \textbf{harmonicFunction}
+    $$\Delta\phi(z,y) := \frac{\partial^2}{\partial x^2}\phi(x,y) + \frac{\partial^2}{\partial y^2}\phi(x,y) = \phi''_{xx} + \phi''_{yy} = 0$$ 
+\end{definition}
+
+\begin{theorem}
+    If $f(z) = u(x,y) + iv(x,y)$ is holomophic in an open set \OO then $u$ and $v$ are harmonic
+\end{theorem}
+\begin{proof}
+    By CR eqs
+\end{proof}
+
+\begin{theorem}
+    Let $u$ be harmonic on an open set \OO then $\exists v$ such that $f = u + iv$ is holomorphic in \OO.
+\end{theorem}
+$v$ is called the harmonic conjugate to $u$.
+\begin{example}
+    When given a $u$, partial diff wrt x and y and integrate and combine using CR eqs
+\end{example}
+
+\begin{theorem}
+    Let $f=u+iv$ be a complex valued function defined on an open set $\Omega \subset \C$.
+    If $u$ and $v$ are continuously differentiable and satisfy the CR Eqs then $f$ is holomorphic
+    and that $\frac{\partial f}{\partial z} = f'(z)$.
+\end{theorem}
+
+\begin{theorem} \label{orthogonal} \textbf{orthogonal}
+    If $f= u + iv$ with $u$ and $v$ constant and $\exists z_0 = x_0 + iy_0$ such that 
+    $f'(z_0) \neq 0$ and ...ask someone about what he means by the same solution for u and v...\\
+    Then the curves defined by $u$ and $v$ are orthogonal at $(x_0,y_0)$
+\end{theorem}
+
+\subsection*{Elementary functions}
+
+\begin{definition} \label{logarithm} \textbf{logarithm}
+    $$\log z = ln |z| + \arg z = \log r + i(\theta  + 2\pi k), \; k \in \mathbb{Z}$$
+\end{definition}
+\begin{definition} \label{principalLogarithm} \textbf{principalLogarithm}
+    $$\Log z = ln |z| + \Arg z$$
+\end{definition}
+
+\begin{definition} \label{powers} \textbf{powers}
+    \[\forall z \in \C \text{ we define } z_\alpha = e^{\alpha \log z}\]
+    This is a multivalued complex function. So the principal value of the power is: $e^{\alpha \Log z}$
+\end{definition}
+
+\section*{Chapter 3} %%%%%%
+\setcounter{section}{3}
+
+\begin{definition}
+    Given \GG parameterised by $z: [a,b] \rightarrow \C$ and $f$ a continuous function on \GG. We have
+    $$\int_\gamma f(z) \mathop{dz} = \int_a^b f(z(t))z'(t) \mathop{dt}$$
+\end{definition}
+
+\begin{definition}
+    If \GG is piecewise smooth then:
+    \[\int_\gamma f(z) \mathop{dz} = \sum_{k = 0}^{N-1}\int_{a_k}^{a_{k+1}}f(z(t))z'(t)\mathop{dt}\]
+\end{definition}
+
+\begin{theorem} \label{MLInequality} \textbf{MLInequality}
+    ML-inequality:
+    \[\biggr\rvert\ \int_\gamma f(z) \mathop{dz} \biggr\rvert \leq \sup_{z\in \gamma}|f(z)| \times \operatorname{length}(\gamma)\]
+\end{theorem}
+
+\begin{theorem}
+    If a continuous function $f$ has a primitive $F$ on an open set \OO and \GG is a curve in \OO that begins with $w_1$ and ends at $w_2$ then:
+    \[\int_\gamma f(z) \mathop{dz} = F(w_2)-F(w_1)\]
+\end{theorem}
+
+\begin{corollary}
+    If \GG is a closed curve in an open set \GG, if $f$ is continous and has a primitive in \GG then
+    \[\int_\gamma f(z) \mathop{dz} = 0\]
+\end{corollary}
+\begin{proof}
+    Choose $w_1 = w_2$
+\end{proof}
+
+\begin{corollary}
+    If $f$ is holomorphic in an open connected set \OO and $f'(z) = 0$ in \OO then $f$ is constant.
+\end{corollary}
+
+\begin{theorem} \label{Green} \textbf{Green}
+    Suppose $P(x,y)$ and $Q(x,y)$ have continous positive derivatives in an open set $\tilde{\Omega}$ contained
+    in a simple closed piecewise-smooth curve \GG and its interior $\Omega \subset \tilde{\Omega}$. Both $P$ and $Q$ are real functions. Then
+    \[\oint_\gamma P \mathop{dx} + Q \mathop{dy} = \iint_\Omega\left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) \mathop{dx}dy\]
+\end{theorem}
+
+\begin{theorem} \label{Cauchy-Goursat}
+    Let $f$ be holomophic inside \OO. \OO bounded by a closed piecewise-smooth simple
+    curve \GG and also holomorphic at the point of \GG. Then
+    \[\oint f(z) \mathop{dz} = 0 \]
+\end{theorem}
+\begin{proof}
+    Use greens theorem on $f = u + iv$
+\end{proof}
+
+\begin{theorem} \label{deformation} \textbf{deformation}
+    Let $\gamma_1$ and $\gamma_2$ be two simple, closed, piecewise-smooth curves with $\gamma_2$ lying wholly inside $\gamma_1$ and suppose $f$
+    is holomorphic in a domain containing the region between $\gamma_1$ and $\gamma_2$ then
+    \[\oint_{\gamma_1} f(z) \mathop{dz} = \oint_{\gamma_2} f(z) \mathop{dz}\]
+\end{theorem}
+
+\begin{definition}
+    A connected domain is said to be simply connected if every closed curve in the domain contains in its interior only points of the domain.
+\end{definition}
+
+\begin{corollary}
+    If $f$ is holomophic in a simply connected open set \GG, then for any closed piecewise-smooth curve $\gamma \in \Omega$ we have
+    \[\oint_\gamma f(z) \mathop{dz} = 0\]
+\end{corollary}
+\begin{corollary}
+    If $f$ is holomorphic in a simply connected open set \OO
+    then the contour integral of $f$ is independent of the path in \OO.
+\end{corollary}
+
+\subsection*{Cauchy integral formula}
+
+\begin{theorem}
+    Let $f$ be holomorphic inside and on a simple closed piecewise-smooth curve \GG.
+    Then for any $z_0$ interior to \GG we have
+    \[f(z_0) = \frac{1}{2\pi i}\oint_\gamma \frac{f(z)}{z - z_0} \mathop{dz}\]
+\end{theorem}
+
+\begin{theorem}
+    Let $f$ be holomorphic in an open set \OO. Then $f$ has infinitely many complex
+    derivatives in \OO. Moreover for a simple, closed piecewise-smooth curve $\gamma \subset \Omega$
+    and any lying z inside \GG we have:
+    \[\frac{d^n}{dz^n} f(z) = \frac{n!}{2 \pi i} \oint_\gamma \frac{f(\eta)}{\left(\eta - z\right)^{n+1}} \mathop{d\eta}\]
+\end{theorem}
+
+\begin{corollary}
+    If a function is holomophic then all of its derivates are holomophi
+\end{corollary}
+\begin{proof}
+    At each point $z \notin \gamma$ define the value of a function $F$ by
+    \[F(z) = \int_\gamma \frac{f(\eta)}{\eta - z} \mathop{d\eta}\]
+\end{proof}
+
+\subsection*{Applications of CIF}
+\begin{theorem} \label{Louisville} \textbf{Louisville}
+    if an entire function is bounded then it is constant
+\end{theorem}
+\begin{proof}
+    Suppose that $f$ is entire and bounded, Then $\exists M > 0$ such that
+    $f(z) < M$ for any $z \in \C$. Let $z_0 \in \C$ and let $\gamma_1 = \{z: |z-z_0Z=r\}$. Then
+    \begin{align*}
+        |f'(z_0)| &= \biggr\rvert \frac{1!}{2 \pi i} \oint_\gamma \frac{f(z)}{(z-z_0)^2} \mathop{dz} \biggr\rvert\\
+                 &\leq M\frac{1}{r^2}\frac{1}{2\pi}2\pi r \text{ ML-inequality}\\
+                 &= \frac{M}{r} \rightarrow 0 \text{ as } r \rightarrow \infty
+    \end{align*}
+    Hence $|f'(z_0)| = 0 \; \Rightarrow \; f'(z_0) = 0$ for any $z_0 \; \Rightarrow \; f(z_0)$ is constant 
+    \hfill$\square$
+\end{proof}
+
+\begin{theorem}
+    Every polynomial of degree greater than zero with complex coefficients has at least one zero
+\end{theorem}
+
+\begin{theorem} \label{maximumModulusPrinciple} \textbf{maximumModulusPrinciple}
+    Let $f$ be holomorphic and not constant in an open connected set \OO. Then
+    $|f(z)|$ cannot take a maximum value in \OO
+\end{theorem}
+
+\begin{corollary}
+    Take thorem above but limit it in \OO then f attains its maximum on $\partial \Omega$
+\end{corollary}
+
+\begin{theorem}
+    Let $f$ be holomorphic and not constant in an open connected domain \OO\\
+    If $f$ has no zeros in \GG then $|f(z)|$ cannot take on a minimum value in \GG
+\end{theorem}
+
+
+\section*{Chapter 4} %%%%%%%
+\setcounter{section}{4}
+\begin{theorem}
+    Let \(c_n \neq 0\) and \(\lim_{n \rightarrow \infty} \left| \frac{c_{n+1}}{c_n} = L \right|\)
+    Then \(\sum_{n = 1}^\infty c_n\)
+    \begin{enumerate}
+        \item Converges absolutely if $L < 1$
+        \item Diverges if $L > 1$  or $L \rightarrow \infty$
+        \item May do either if $L = 1$
+    \end{enumerate}
+    We get the same result for the \textbf{root test} with
+    \[c_n \neq 0 \text{ and } \lim_{n \rightarrow \infty} \left| c_n\right|^{\frac{1}{n}} \]
+\end{theorem}
+
+
+\subsection*{Taylor expansion}
+\begin{theorem}
+    If \(\SumI a_n(z-z_0)^n\) converges for a point $z_1$ then it converges for
+    all $z$ that satisfy $|z-z_0| < |z-z_1|$
+\end{theorem}
+
+\begin{definition}
+    For $\SumI a_n(z-z_0)^n$ there exists $R$ called the radius of convergence such that
+    \begin{enumerate}
+        \item If $|z-z_0| < R$ then the series converges
+        \item If $|z-z_0| > R$ then the series diverges
+        \item Undefined if $|z-z_0| = R$
+    \end{enumerate}
+    With a previously defined above: $R = 1/L$ i.e
+    \[R = \left| \lim_{n \rightarrow \infty} \frac{a_n}{a_{n+1}}\right|\]
+    or 
+    \[R =  \lim_{n \rightarrow \infty} \frac{1}{|a_n|^{\frac{1}{n}}}\]
+\end{definition}
+
+\begin{theorem} \label{differentiationIntegrationPS} \textbf{differentiationIntegrationPS}
+    Let $R$ be the radius of convergence of the series $f(z) = \CSeries$.
+    Then $f$ is holomorphic inside ${z \in \C, |z-z_0| < R}$ and its derivative equals
+    \[f'(z) = \sum_{n = 1}^\infty na_n(z-z_0)^{n-1}\]
+    whose radius of convergence is also $R$.\\
+    Furthermore if \GG is any piecewise-smooth curve in the circle on convergence
+    joining $z_1$ and $z_2$ then
+    \[\int_\gamma f(z) \mathop(dz) = \SumI \int_\gamma a_n(z-z_0)^n \mathop(dz) \biggr\rvert_{z_1}^{z_2} = \SumI a_n \frac{(z-z_o)^{n+1}}{n+1}\]
+\end{theorem}
+
+\begin{theorem} \label{TaylorSeries} \textbf{TaylorSeries}
+    Let $f$ be holomorphic in an open set \OO and let $z_0 \in \Omega$. Then
+    \[f(z) = f(z_0) + f'(z_0)(z-z_0) + \frac{f''(z_0)}{2!}(z-z_0)^2 + \cdots\]
+    Valid in all circles ${z \in \C, |z-z_0| < r} \subset \Omega$
+\end{theorem}
+
+\subsection*{Zeros of holomorphic functions}
+\begin{definition} \label{zeroOfOrderM} \textbf{zeroOfOrderM}
+    We say that $f$ has a zero of order $m$ at $z_0 \in \C$ if 
+    \[f^{(k)}(z_0) = 0 \text{ for } k \in [0, m-1] \text{ and } f^{(m)}(z_0) \neq 0\]
+\end{definition}
+
+\begin{theorem}
+    A holomophic function $f$ has a 0 of order $m$ at $z_0$ if and only if it can be written in the form
+    $f(z) = (z-z_0)^m g(z)$ where $g$ is holomorphic at $z_0$ and $g(z_0) \neq 0$
+\end{theorem}
+\begin{proof}
+    $\Rightarrow f$ is holomorphic so can expand at $z_0$
+    \begin{align*}
+        f(z) &= \frac{f^{(m)}(z_0)}{m!}(z-z_0)^m + \frac{f^{(m+1)}(z_0)}{m+1!}(z-z_0)^{m+1} + \cdots\\
+             &= (z-z_0)^m\left( \frac{f^{(m)}(z_0)}{m!} + \frac{f^{(m+1)}(z_0)}{m+1!}(z-z_0)+ \cdots\right)\\
+             &= (z-z_0)^mg(z)
+    \end{align*} 
+    $\qquad \Leftarrow$ Conversly if $f = (z-z_0)^m g(z)$ where $g(z_0) \neq 0$ then $f^{(k)}(z_0)=0$ for $k \in [0, m-1]$
+    and $f^{(m)}(z_0) = m!g(z) \neq 0$ as $g(z_0) \neq 0$
+\end{proof}
+
+\begin{corollary}
+    The zeros of non constant holomorphic functions are isolated. That is there is no zero in a neighbourhood around that zero.
+\end{corollary}
+\begin{proof}
+    If $z_0$ is a zero of $f$ of order $m$ then $f(z)=(z-z_0)^m g(z)$ where $g$ is holomorphic and $g(z_0) \neq 0$\\
+    $\qquad \Rightarrow g$ is continuous\\
+    $\qquad \Rightarrow \exists U_{z_0} \subset \C$, a neighbourhood of $z_0$ such that $g(z) \neq 0, z \in U_{z_0}$\\
+    $\qquad \Rightarrow f(z) != 0$ except for $z = z_0$
+\end{proof}
+
+\subsection*{Laurent Series}
+
+\begin{definition}
+    \[f(z) = \LSeries = \cdots + a_{-1}(z-z_0)^{-1} + a_0 + a_1(z-z_0) + \cdots \]
+\end{definition}
+
+\begin{theorem}
+    Let $f$ be holomorphic in the annulus
+    \[D = \{z \in \C: r < |z-z_0| < R\},\quad r,R > 0\]
+    Then $f(z)$ can be expressed in the form $f(z) = \LSeries$ where
+    \[a_n = \ointctrclockwise_\gamma \frac{f(\eta)}{(\eta - z_0)^{n+1}} \mathop{d\eta}\]
+    Where \GG is any simple, closed, piecewise-smooth curve in $D$ that contains $z_0$ in its interior.
+\end{theorem}
+
+\begin{definition} \label{singularity} \textbf{singularity}
+    A point $z_0$ \textit{singularity} is called a singularity of a complex function $f$ if
+    $f$ is not holomorphic at $z_0$ but every neighbourhood of $z_0$ contains at least one point where $f$ is holomorphic
+\end{definition}
+
+\begin{definition} \label{isolatedSingularity} \textbf{isolatedSingularity}
+    An \textit{isolated singularity} is a singularity where there exists a neighbourhood around it where it is the only singularity.
+\end{definition}
+
+\begin{definition} \label{pole} \textbf{pole} \label{essentialSingularity} \textbf{essentialSingularity} \label{removableSingularity} \textbf{removableSingularity}
+    Suppose a holomorphic function $f$ as an isolated singularity at $z_0$ and $\LSeries$ is the Laurent series of $f$ in
+    some valid annulus $0 < |z-z_0| < R$, then:
+    \begin{itemize}
+        \item If $a_n = 0$ for $n < 0$, $z_0$ is called a \textit{removable singularity}
+        \item If $a_n = 0$ for $n < -m$ where $m \in \N^*$ and $a_{-m} \neq 0$ then $m$ is called a \textit{pole of order $m$}
+        \item If $a_n \neq 0$ for infinitely many $n$'s then $z_0$ is called an \textit{essential singularity} of $f$
+    \end{itemize}
+\end{definition}
+
+\begin{theorem}
+    A function $f$ has a pole of order $m$ at $z_0$ iff it can be written in the form
+    \[f(z) = \frac{g(z)}{(z-z_0)^m}\]
+    where $g$ is holomorphic and $g(z_0) \neq 0$
+\end{theorem}
+
+\subsection*{Holomorphic continuation}
+
+\begin{theorem}
+    Let $f_1$ and $f_2$ be 2 holomorphic function inside an open connected set \OO.
+    $$f_1(z) = f_2(z), z \in \tilde{\Omega}, \tilde{\Omega} \subset \Omega \Rightarrow f_1(z) = f_2(z), z \in \Omega$$
+\end{theorem}
+
+We can relax $\tilde{\Omega} \subset \Omega$ with $\tilde{\Omega}$ open connected to a path \GG in \OO or
+a convergent sequence in \OO
+
+\begin{corollary} \label{continuation} \textbf{continuation}
+    When a function is holomophic in \OO then it is \textit{holomorphically} continued to $\tilde{\Omega}$ such that
+    $\Omega \bigcap \tilde{\Omega} \neq 0$.
+    The continuation is unique
+\end{corollary}
+
+\section*{Chapter 5} %%%%%%%
+\setcounter{section}{5}
+
+Consider $\LSeries, \quad |z-z_0| < R$
+\begin{definition}
+    The \textit{residue} $\Res{f}{z_0} = a_{-1}$
+\end{definition}
+
+\begin{theorem}
+    Let $\gamma \subset \Omega = \{z: 0 < |z-z_0| < R \}, \; R > 0$ be a closed, piecewise-smooth curve that contains
+    $z_0$ and $f$ is holomorphic in \OO. Then:
+    \[\Res{f}{z_0} = \frac{1}{2\pi i} \ointctrclockwise_\gamma f(z) \mathop{dz}\]
+\end{theorem}
+
+\begin{proof}
+    \begin{align*}
+        \frac{1}{2\pi i}\ointctrclockwise_\gamma f(z) \mathop{dz} =& \; \frac{1}{2\pi i} \;\sum_{-\infty}^{\infty} \;\ointctrclockwise_{|z-z_0| = r} a_n(z-z_0)^n \mathop{dz}\\
+                                                                  =& \; \frac{1}{2\pi i} \;\sum_{-\infty}^{\infty} \;\int_0^{2\pi} a_n r^n e^{i\phi n} i r e^{i\phi}\mathop{d\phi}\\
+                                                                  =& \; \frac{1}{2\pi} \;\sum_{-\infty}^{\infty} \;\int_0^{2\pi} a_n r^{n + 1} e^{i\phi(n + 1)} \mathop{d\phi}\\
+                                                                  =& \; a_{-1} \text{ as } \int_0^{2\pi} e^{i\phi n+1} \mathop{d\phi} = 0 \text{ for } n \neq 1 \text{ by periodicity of } \cos \text{ and } \sin
+    \end{align*}
+\end{proof}
+
+\begin{theorem}
+    let $f$ be holomorphic inside \GG apart from singularities $z_0, z_1, \cdots, z_n$, then
+    \[\ointctrclockwise_\gamma f(z) \mathop{dz} = 2\pi i \sum_{j = 0}^n \Res{f}{z_j}\]
+\end{theorem}
+
+\subsection*{Calculating residue}
+Let $f(z) = a_m(z-z_0)^{-m} + \cdots + a_{-1}(z - z_0)^{-1} + a_0 + a_1(z-z_0) + \cdots$ and write
+$g(z) = (z-z_0)^m f(z)$ then\\
+
+for $m = 1$ we have $g(z) = a_{-1} + a_0(z-z_0) + \cdots$ then 
+\[\Res{f}{z_0} = \lim_{z \rightarrow z_0} g(z) = \lim_{z \rightarrow z_0} (z-z_0)f(z) \]
+
+for $m = 2$ we have $g(z) = a_{-2} + a_{-1}(z-z_0) + a_0(z-z_0)^2 + \cdots$
+\[\Res{f}{z_0} = a_{-1} = \frac{d}{dz}g(z)\biggr\rvert_{z=z_0} = \lim_{z \rightarrow z_0}\frac{d}{dz}\left((z-z_0)^2 f(z)\right) \]
+
+Inductively
+\[\Res{f}{z_0} = \lim_{z \rightarrow z_0} \frac{1}{(m-1)!} \frac{d^{m-1}}{dz^{m-1}} (z-z_0)^m f(z) \]
+
+\subsection*{Winding number}
+\begin{theorem} \label{principleOfTheArgument} \textbf{principleOfTheArgument}
+    Let $f$ be a holomorphic function in an open set \OO with a finite number of poles and let \GG be a simple piecewise-smooth curve inside \OO that doesn't pass
+    through any zero or poles of $f$. Then
+    \[\ointctrclockwise_\gamma \frac{f'(z)}{f(z)} \mathop{dz} = 2\pi i(N-P)\]
+    where $N$ (resp. $P$) is the sum of the order of zeros (poles) inside \GG
+\end{theorem}
+
+If $z_1 = z_2 * e^{2k\pi}$ then
+\begin{align*}
+    \ointctrclockwise_\gamma \frac{f'(z)}{f(z)} &= \frac{1}{2\pi i}\ointctrclockwise_\gamma \frac{d}{dz}log\left( f(z) \right) \mathop{dz}\\
+                                                &= \frac{1}{2\pi i}log\left( f(z)\right)\biggr\rvert_{z_1}^{z_2}\\
+                                                &= \frac{1}{2\pi i} \left( \ln |f(z_2)| - \ln |f(z_1)| + i[\arg f(z_2) - \arg f(z_1)] \right)\\
+                                                &= \frac{1}{2\pi} \Delta_\gamma \arg f(z) = \text{no. of times } f \text{ winds around 0.}
+\end{align*}
+
+\begin{theorem} \label{Rouche} \textbf{Rouche}
+    Let $f$ and $g$ be holomorphic in \OO and $\gamma \subset \Omega$.\\
+    If $|g(z)| < |f(z)|$ then the sum of order of zeros of $f+g$ and $f$ are the same.
+\end{theorem}
+\textit{Remark: } The theorem also state the orientation is preserved\\
+\textit{Remark: } The condition $f'(0) \neq 0$ is very important. E.g $f(z) = z^2 \Rightarrow f'(0) = 0$ 
+
+\subsection*{Evalutating integrals}
+%% TODO: but probably don't write everything down %%
+Evaluate:
+\[ \int_0^{2\pi} \frac{1}{2-\cos \theta}\mathop{d\theta}\]
+\[ \int_0^\infty \frac{1}{1+x^3} \mathop{dx} \]
+\textit{note: } for this one you cannot do a semi-circle, so you instead stop at an angle where is 0 on the way back along the path from the arc to the origin 
+\[ \int_{-\infty}^\infty \frac{\cos x}{e^x+e^{-x}}\mathop{dx} \]
+\textit{help: } find the poles and draw a rectangle
+\[ \int_0^\infty \frac{(\log x)^2}{1+x^2} \mathop{dx} \]
+\textit{help: } consider semi annulus (annulus because can apply residue theory)
+
+
+\section*{Chapter 6} %%%%%%%
+\setcounter{section}{6}
+
+Recall \ref{orthogonal}, but turns out the angle is preserved for more things.
+\begin{theorem}
+    If you have a parameterization of $\gamma_1$ and $\gamma_2$ such that $z_0 = z_1(0) = z_2(0)$
+    and $z_1'(0), z_2'(0), f'(z_0) \neq 0$ then we get
+    \[ \arg(z_2'(t) - z_1'(t))\rvert_{t=0} = \arg((f(z_2(t)' -f(z_1(t))')\rvert_{t=0} \mod(2\pi) \]
+\end{theorem}
+
+\begin{definition} \label{conformal} \textbf{conformal}
+    We say that a complex function is \textit{conformal} in an open set $\Omega \subset \C$ if it is holomorphic in \OO and $f'(z) \neq 0, \; \forall z \in \Omega$
+\end{definition}
+
+\subsection*{Mobius transfomation}
+
+\begin{definition} \label{mobiusTransformation} \textbf{mobiusTransformation}
+    A \textit{ Mobius transformation}, also called a \textbf{\textit{bilinear transformation}} is a map such that
+    \[f(z) = \frac{az+b}{cz+d}, \; ad-bc \neq 0, \; a,b,c,d \in \C \]
+\end{definition}
+
+\begin{theorem}
+    The inverse of a Mobius transformation is a Mobius transformation
+\end{theorem}
+
+\begin{definition}
+    (M1) $z \mapsto az$\\
+    (M2) $z \mapsto z + b$\\
+    (M3) $z \mapsto \frac{1}{z}$
+\end{definition}
+
+\begin{theorem}
+    Every Mobius transformation is the result of composition of transformations of type (M1), (M2), (M3)
+\end{theorem}
+
+\begin{corollary}
+    Mobius transformations map circles into circles and interior points into interior points.\\
+    \textit{Note that straight lines are considered as circles with r = $\infty$}
+\end{corollary}
+
+Define $H$ to be $H=\{z \in \C: Im(z) >= 0\}$
+\begin{theorem}
+    Let $w = f(z) = \frac{i-z}{i+z}$ and $g(w) = i\frac{1-w}{1+w} = f^{-1}$. Then the map $f \; : \; H \rightarrow \operatorname{D}$ is a conformal map with inverse $g\; : \; \operatorname{D}\rightarrow H$
+\end{theorem}
+
+\begin{theorem}
+    if $w = f(z)$ is a Mobius tranform that maps $(z_1, z_2, z_3)$ to resepectively $(w_1, w_2, w_3)$ then
+    \[\frac{z-z_1}{z-z_3}\frac{z_2-z_3}{z_2-z_1} = \frac{w-w_1}{w-w_3}\frac{w_2-w_3}{w_2-w_1} \quad \forall z\]
+\end{theorem}
+
+\begin{example}
+    Find the MT that maps the poitn $z_0 = -i,\; z_1 = 1,\; z_2 = \infty$ to $w_0 = 1, \; w_1 = i,\; w_2 = -1$.
+\begin{align*}
+    \lim_{z_3 \rightarrow \infty} \frac{z+i}{z-z_3}\frac{1-z_3}{1+i}
+        &= \lim_{t \rightarrow 0}\frac{z+i}{z-\frac{1}{t}} \frac{1-\frac{1}{t}}{1+i}\\
+        &= \frac{z + i}{-i}\frac{-1}{1+i}\\
+        &= \frac{z-i}{1+i}
+\end{align*}
+\begin{align*}
+    \Rightarrow \; \frac{z-i}{1+i}
+        &= \frac{w-w_0}{w-w_2}\frac{w_1-w_2}{w_1-w_0}\\
+        &= \frac{w-1}{w+1}\frac{1+i}{i-1}\\
+\end{align*}
+\begin{align*}
+    \Rightarrow& 
+        \; (z+i)(i-1)(w+1) = (w-1)(1+i)^2\\
+    \Rightarrow&
+        \; w = \frac{z(i-1)+(i-1)}{z(i-1) + (1+3i)}
+\end{align*}
+\end{example}
+
+\begin{example}
+    $w=f(z)=\log z$ with the negative imaginary axis as the branch cut is a conformal mapping that takes the upper
+    half plane to the strip between the real axis to the line $y = \pi$.
+\end{example}
+\textbf{Note: please investigate longer on this during revisions as finding a mapping or an exercise of
+that sort is likely to come out.}\\
+
+Recall the theorem saying that the maping $g : \mathbb{D} \rightarrow H$ is
+\[ g(z) = i\frac{1-w}{1+w} \]
+
+\begin{corollary}
+    Let $w = F(z) = \frac{1}{\pi}\log \left(i\frac{1-w}{1+w}\right)$ and $G(w) = \frac{i-e^{\pi w}}{i+e^{\pi w}}$.
+    Then both $F$ adn $G$ are conformal and they are inverse of each others.\\
+    $F$ maps the unit disk to $\Omega = \{ w= u+iv: u\in\R, 0<v<1 \}$, with the lower half circle being mapped to
+    the line $y = 1$ and the upper half to $y=0$.\\
+    More precisely as $\theta$ change from $-\pi$ to 0 then $F(e^{i\theta})$ goes from $i + \infty$ to $i - \infty$
+    and as $\theta$ goes from $0$ to $\pi$ then $(e^{i\theta})$ goes from $-\infty$ to $\infty$ on the real line.
+\end{corollary}
+
+\begin{theorem} \label{SwartzLemma} \textbf{SwartzLemma}
+    If the function $f$ is holomorphic on the unit disc and satisfies the conditions $|f(z)| \leq 1$ and $f(0) = 0$ then
+    \[ |f(z)| \leq |z| \text{ and } f'(0) = 1\]
+    The equality $f(z) = z$ at $z \in \mathop{D}$ only holds if $f = \alpha z$ with $\alpha = 1$
+\end{theorem}
+\begin{proof}
+    See psheet 5.\\
+    By hypothesis $g(z) = \frac{f(z)}{z}$ is holomorphic on the unit disc.
+    We then use the maximum modulus principle in $z: |z| \leq r, \; r < 1$ we have
+    \begin{align*}
+        |g(z)|
+            &\leq g(z_r) &&\text{for } z_r \text{ on the boundary}\\
+            &\leq \frac{|f(z_r)|}{|z_r|}\\
+            &\leq \frac{1}{r} &&\text{by } f(z) \leq 1 \; \forall z\\
+            &\leq 1 && \text{as } r\rightarrow 1
+    \end{align*}
+    \[ \Rightarrow |f(z)| \leq |z| \text{ in } \mathop{D} \]
+    We have $|f'(0)| = \frac{f(z) - f(0)}{z - 0} = |g(0)| \leq 1$ with equality
+    iff function reaches it's maximum at $z = 0$and therefore must be constant by
+    maximum modulus principle.
+    \[ \Rightarrow g(z) = \alpha \text{ with } |\alpha| = 1 \Rightarrow f(z) = \alpha z \]
+\end{proof}
+
+\begin{theorem} \label{inavrianceOfHarmonicityUnderConformalMapping} \textbf{inavrianceOfHarmonicityUnderConformalMapping}
+    Let $f : \Omega_1 \rightarrow \Omega_2$ be conformal and $\phi$ be a harmonic function on $\Omega_2$ (which is 
+    the real part of an holomorphic function). Then $\phi \circ f$ on $\Omega_2$ is conformal.
+\end{theorem}
+
+\subsection*{The Dirichlet problem in a strip \textit{\small{probably non-examinable}}}
+The Dirichlet problem in the open set \OO consists of solving
+\[
+    \begin{cases}
+        \Delta u = 0 \text{ in } \Omega\\
+        u = f \text{ on } \partial\Omega
+    \end{cases}
+\]
+We now considert the problem when \OO is the horizontal strip $\{ z = x+iy: x\in\R, 0 < y < \pi \}$.
+In the case $u(x, 0) = f_0(x)$ and $u(x, \pi) = f_1(x)$. We shall assume that $f_0$ and $f_1$ are continuous
+and vanish vanish at $\infty$.\\
+Introduce:
+\begin{align*}
+    F(w) = \frac{1}{\pi} \log i\frac{1-w}{1+w} && G(z) = \frac{i-e^{i\pi}}{i+e^{i\pi}}
+\end{align*}
+And we've seen by the earlier corollary that $F$ maps the unit disc to the strip \OO. We define:
+\[ \tilde{f}_1(\theta) = f_1(F(e^{i\theta} - i)), \quad -\pi < \theta < 0 \]
+and
+\[ \tilde{f}_0(\theta) = f_0(F(e^{i\theta})), \quad 0 < \theta < \pi \]
+So we can introduce
+\[
+    f(\theta) = 
+\begin{cases}
+    \tilde{f}_1(\theta), \quad -\pi < \theta < 0\\
+    \tilde{f}_0(\theta), \quad 0 < \theta < \pi
+\end{cases}
+\]
+Then the solutions of the Dirichlet problem in the unit disc are given by the Poisson integral.
+\[ \tilde{u}(w) = \frac{1}{2\pi} \int_{-\pi}^\pi \frac{1 - r^2}{1 - 2\cos(\theta - \phi) + r^2} \tilde{f}(\phi) \mathop{d\phi} \]
+
+\subsection*{Univalent functions}
+\begin{definition}
+    A function is called \textit{univalent} if it never takes the same value twice.
+    \[ f(z_1) = f(z_2) \Rightarrow z_1 = z_2 \]
+\end{definition}
+\textbf{Note:} For holomorphic functions it is enought to prove that $f'(z) \neq 0$. Therefore univalent
+functions are conformal.
+
+Consider the class $S$ of univalent functions on the unit disc such that $f(0) = 0$ and $f'(0) = 1$.\\
+Then for each $f \in S$ we have the taylor series:
+\[ f(z) = z + a_2z^2 + a_3z^3 + \cdots \qquad |z| < 1\]
+The leading example of a function is the class $S$ is the Koebe function.
+\[ k(s) = \frac{z}{(1-z)^2} = z \left( 1 + z + z^2 +\cdots \right)^2 = z + 2z^2 + 3z^3 + \cdots \]
+The Koebe function maps the open disc to the set $\C \backslash (-\infty, -\frac{1}{4})$
+This could be seen by writting 
+\[ k(z) = \frac{1}{4}\left(\frac{1+z}{1-z}\right)^2 - \frac{1}{4}\]
+And observing that the function
+\[ w = \frac{1+z}{1-z} \]
+maps conformally the unit disk to $\Real(w) > 0$.
+
+\begin{example}
+    \begin{enumerate}
+        \item $f(z) = z$ -the identity mapping;
+        \item $f(z) = z(1-z)^{-1}$ that maps $\mathbb{D}$ into $\Real w > \frac{1}{2}$
+        \item $f(z) = z(1-z^2)^{-1}$ that maps $\mathbb{D}$ into $\C \backslash \{(-\infty, -1/2) \cup (1/2, \infty)\}$
+    \end{enumerate}
+\end{example}
+Closely related to the class $S$ is the class $\Sigma$ where functions are of the form
+\[ g(z) = z + b_0 + b_1z^{-1} + b_2z^{-2} + \cdots\]
+which are holomorphic and univalent in the open unit disc.
+
+\begin{theorem} \label{areaTheorem} \textbf{areaTheorem}
+    Let $g \in \Sigma$ then
+    \[ \Sigma_{n = 1} n|b_n|^2 \leq 1 \]
+\end{theorem}
+Very convoluted proof...
+
+\begin{corollary}
+    \[ |b_n| \leq n^{1/2}, \quad n = 1,2,3,\cdots\]
+    In particular $|b_n| \leq 1$ with equality iff
+    \[ g(z) = z + b_0 +\frac{b_1}{z} \]
+\end{corollary}
+
+\begin{theorem} \label{BeiberbachTheroem} \textbf{BeiberbachTheroem}
+    If $f \in S$ then $a_2 \leq 2$ with equality iff $f$ is a rotation of the Koebe function.
+\end{theorem}
+\begin{proof}
+    Let
+    \[ g(z) = \left(f\left(\frac{1}{z^2}\right)\right)^{-1/2} = z - \frac{a_2}{2}z^{-1} + \cdots \in \Sigma \]
+    Then the area theorem implies that $a_2 \leq 2$ with the equality iff
+    \[ g(z) = z - \frac{e^{i\theta}}{z} + \cdots \]
+    Computing $f$ we find
+    \begin{align*}
+        f(z)
+            &= \frac{z}{(1-e^{i\theta}z)^2}\\
+            &= e^{-i\theta}k(e^{i\theta}) && \text{as } f(1/z^2)^{-1} = \frac{z^2 - e^{i\theta}}{z}
+    \end{align*}
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%% APPENDIX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\appendix
+
+
+\section{Formula book}
+\textbf{Geometric series}
+\[ \quad \frac{1}{z-a} = -\frac{1}{a}\times\frac{1}{1-\frac{z}{a}} = -\frac{1}{a} \sum_{n=0}^{\infty} \left( \frac{z}{a} \right)^n \text{ for } |z| < |a|, \; a \in \operatorname{Z}^* \]
+\[ \quad \frac{1}{z-a} = \frac{1}{z}\times\frac{1}{1-\frac{a}{z}} = \frac{1}{z} \sum_{n=0}^{\infty} \left( \frac{a}{z} \right)^n \text{ for } |a| < |z|, \; a \in \operatorname{Z}^* \]
+
+\section{Harmonic conjugate}
+In a simply connected domain $\Omega \in \R^2$, every function $u$ has a harmonic conjugate $v$ defined
+by the line integral
+\[ v(x,y) = \int_\gamma \left( -\frac{\partial u}{\partial y}\mathop{dx} + \frac{\partial u }{\partial x}\mathop{dy}\right) \]
+where the path of integration \GG is a curve starting at $(x_0,y_0) \in \Omega$ and with end point $(x,y) \in \Omega$.
+Trivially we can say that the integral is independent of the path using Green's theorem and the fact that $u$ is harmonic.
+\[ 
+    \ointctrclockwise_\gamma \left( -\frac{\partial u}{\partial y}\mathop{dx} + \frac{\partial u }{\partial x}\mathop{dy}\right) 
+    = \iint_\Omega \left( -\frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial x^2} \right)\mathop{dx}{dy}
+    = 0
+\]
+We now need to prove that $v$ is harmonic, for this we choose a path going from the origin $z_0$ to
+a point $z = s+is$ following the path \GG where $\gamma = \gamma_1 \cup \gamma_2$ defined by
+\begin{align*}
+    \gamma_1 = \{ z = x+iy: x \in (0, s),\; y = 0 \} && \gamma_2 = \{ z = x+iy: y'\in i(0, t), \; x = s\}
+\end{align*}
+Then since $u$ is harmonic
+\begin{align*}
+    v'_x(s,t)
+        &= \left( \int_\gamma -\frac{\partial u}{\partial y}\mathop{dx} + \frac{\partial u }{\partial x}\mathop{dy}\right)'_x\\
+        &= \left( \int_{\gamma_1} -\frac{\partial u}{\partial y}\mathop{dx}\right)_x' + \left( \int_{\gamma_2} \frac{\partial u }{\partial x}\mathop{dy}\right)'_x\\
+        &= -u_y'(s,0) + \int_{\gamma_2} \frac{\partial^2 u}{\partial x^2}\mathop{dy}\\
+        &= -u_y'(s,0) - \int_{\gamma_2} \frac{\partial^2 u}{\partial y^2}\mathop{dy}\\
+        &= -u_y'(s,0) - \left[u_y'(s, y)\right]_{y=0}^{y=t}\\
+        &= -u_y'(s, 0) - (u_y'(s, t) - u_y'(s, 0))\\
+        &= -u_y'(s,t)
+\end{align*}
+We get $v_y(x,y) = u_x(x,y)$ in a similar way.
+\[ \Rightarrow \text{ The C-R equations are respected} \Rightarrow u \text{ and } v \text{ are harmonic conjugates} \]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
